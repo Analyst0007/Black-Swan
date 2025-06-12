@@ -4,8 +4,6 @@ Created on Wed Jun 11 23:35:38 2025
 
 @author: Hemal
 """
-    
-
 import streamlit as st
 import pandas as pd
 
@@ -28,7 +26,7 @@ if uploaded_file is not None:
     strike_prices = sorted(data['Strike Price  '].unique())
 
     # Current underlying value
-    underlying_value = data["Underlying Value  "].iloc[0]
+    underlying_value = st.number_input("Enter the underlying price", value=0.0)
 
     # Find the ATM strike price
     atm_strike = min(strike_prices, key=lambda x: abs(x - underlying_value))
@@ -39,7 +37,7 @@ if uploaded_file is not None:
     # List ATM strike and 10 strikes above and below
     selected_strikes = strike_prices[atm_index - 10 : atm_index + 11]
 
-    # Calculate absolute distance from ATM strike price
+    # Calculate absolute distance from the underlying price
     distances = [abs(strike - atm_strike) for strike in selected_strikes]
 
     # Provide weights in inverse proportion to distance
@@ -58,7 +56,7 @@ if uploaded_file is not None:
 
     st.write("ATM Strike Price:", atm_strike)
     st.write("Selected Strikes:", selected_strikes)
-    st.write("Distances from ATM Strike:", distances)
+    st.write("Distances from Underlying Price:", distances)
     st.write("Weights:", weights)
     st.write("Weighted Highs:", weighted_highs)
     st.write("Sum of Weighted Highs:", sum_weighted_highs)
